@@ -17,3 +17,8 @@ Cargo.lock
 !.vscode/launch.json
 !.vscode/extensions.json
 \.vscode/
+
+
+# Added by cargo
+
+/target
