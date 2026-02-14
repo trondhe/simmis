@@ -36,34 +36,8 @@ impl Lexer {
                 continue;
             }
 
-            if *c == '(' {
-                tokens.push(Token::ParOpen);
-                chars.next();
-                continue;
-            }
-
-            if *c == ')' {
-                tokens.push(Token::ParClose);
-                chars.next();
-                continue;
-            }
-
-            if *c == '!' {
-                tokens.push(Token::Factorial);
-                chars.next();
-                continue;
-            }
-
-            if *c == '+' || *c == '-' || *c == '*' || *c == '/' || *c == '^' || *c == '%' {
-                match c {
-                    '+' => tokens.push(Token::Op(Op::Add)),
-                    '-' => tokens.push(Token::Op(Op::Sub)),
-                    '*' => tokens.push(Token::Op(Op::Mul)),
-                    '/' => tokens.push(Token::Op(Op::Div)),
-                    '^' => tokens.push(Token::Op(Op::Pow)),
-                    '%' => tokens.push(Token::Op(Op::Mod)),
-                    _ => (),
-                }
+            if let Some(op) = to_token(*c) {
+                tokens.push(op);
                 chars.next();
                 continue;
             }
@@ -79,6 +53,22 @@ impl Lexer {
             )));
         }
         Ok(tokens)
+    }
+}
+
+fn to_token(c: char) -> Option<Token> {
+    use Op::*;
+    match c {
+        '+' => Some(Token::Op(Add)),
+        '-' => Some(Token::Op(Sub)),
+        '*' => Some(Token::Op(Mul)),
+        '/' => Some(Token::Op(Div)),
+        '^' => Some(Token::Op(Pow)),
+        '%' => Some(Token::Op(Mod)),
+        '(' => Some(Token::ParOpen),
+        ')' => Some(Token::ParClose),
+        '!' => Some(Token::Factorial),
+        _ => None,
     }
 }
 
